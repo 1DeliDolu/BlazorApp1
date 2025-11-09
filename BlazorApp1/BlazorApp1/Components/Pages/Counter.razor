@@ -1,4 +1,6 @@
-﻿@page "/counter"
+﻿@page "/counter/{initialCounter:int?}"
+@page "/counter2"
+
 @rendermode InteractiveServer
 
 <PageTitle>Counter</PageTitle>
@@ -9,8 +11,30 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+@if (currentCount > 3)
+{
+    <p>You win!</p>
+}
+
+<ul>
+    @for (int i = 0; i < currentCount; i++)
+    {
+        <li>Clicked</li>
+    }
+</ul>
+
+<p>Initial route count: @InitialCounter</p>
+
 @code {
-    private int currentCount = 0;
+    private int currentCount;
+
+    [Parameter]
+    public int? InitialCounter { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        currentCount = InitialCounter ?? 0;
+    }
 
     private void IncrementCount()
     {
